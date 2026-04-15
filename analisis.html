@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análisis de Rutas - Dashboard</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/analisis.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📊 Dashboard de Análisis de Rutas</h1>
+            <p class="subtitle">Análisis Visual e Interactivo de Datos</p>
+            <div class="header-actions">
+                <a href="index.html" class="back-btn">← Volver a Registros</a>
+            </div>
+        </header>
+
+        <!-- Filtros Globales -->
+        <div class="filters-section">
+            <h2>🔍 Filtros de Análisis</h2>
+            <div class="filters-grid">
+                <div class="filter-group">
+                    <label for="periodoFiltro">Período:</label>
+                    <select id="periodoFiltro">
+                        <option value="semana">Esta Semana</option>
+                        <option value="mes" selected>Este Mes</option>
+                        <option value="año">Este Año</option>
+                        <option value="personalizado">Personalizado</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group" id="fechasPersonalizadas" style="display: none;">
+                    <label for="fechaInicioFiltro">Desde:</label>
+                    <input type="date" id="fechaInicioFiltro">
+                </div>
+                
+                <div class="filter-group" id="fechasPersonalizadas2" style="display: none;">
+                    <label for="fechaFinFiltro">Hasta:</label>
+                    <input type="date" id="fechaFinFiltro">
+                </div>
+                
+                <div class="filter-group">
+                    <label for="rutaFiltro">Ruta:</label>
+                    <select id="rutaFiltro">
+                        <option value="todas">Todas las Rutas</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <button id="aplicarFiltros" class="apply-filters-btn">Aplicar Filtros</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tarjetas de Resumen -->
+        <div class="summary-cards">
+            <div class="summary-card card-blue">
+                <div class="card-icon">🚌</div>
+                <div class="card-content">
+                    <h3 id="totalViajes">0</h3>
+                    <p>Total de Viajes</p>
+                </div>
+            </div>
+            
+            <div class="summary-card card-red">
+                <div class="card-icon">⏰</div>
+                <div class="card-content">
+                    <h3 id="totalRetardos">0</h3>
+                    <p>Viajes con Retardo</p>
+                </div>
+            </div>
+            
+            <div class="summary-card card-green">
+                <div class="card-icon">✓</div>
+                <div class="card-content">
+                    <h3 id="porcentajePuntualidad">0%</h3>
+                    <p>Puntualidad</p>
+                </div>
+            </div>
+            
+            <div class="summary-card card-purple">
+                <div class="card-icon">👥</div>
+                <div class="card-content">
+                    <h3 id="totalPasajeros">0</h3>
+                    <p>Total Pasajeros</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gráfica 1: Retardos por Ruta -->
+        <div class="chart-section">
+            <div class="chart-header">
+                <h2>⏰ Análisis de Retardos por Ruta</h2>
+                <div class="chart-controls">
+                    <select id="vistaRetardos">
+                        <option value="cantidad">Cantidad de Retardos</option>
+                        <option value="porcentaje">Porcentaje de Retardos</option>
+                    </select>
+                </div>
+            </div>
+            <div class="chart-container">
+                <canvas id="chartRetardos"></canvas>
+            </div>
+            <div class="chart-info">
+                <p><strong>Tolerancia:</strong> 20 minutos después de la hora programada</p>
+                <p id="infoRetardos"></p>
+            </div>
+        </div>
+
+        <!-- Gráfica 2: Población por Ruta -->
+        <div class="chart-section">
+            <div class="chart-header">
+                <h2>👥 Población Transportada por Ruta</h2>
+                <div class="chart-controls">
+                    <select id="vistaPoblacion">
+                        <option value="total">Total de Pasajeros</option>
+                        <option value="promedio">Promedio por Viaje</option>
+                    </select>
+                </div>
+            </div>
+            <div class="chart-container">
+                <canvas id="chartPoblacion"></canvas>
+            </div>
+            <div class="chart-info">
+                <p id="infoPoblacion"></p>
+            </div>
+        </div>
+
+        <!-- Gráfica 3: Duración de Viajes -->
+        <div class="chart-section">
+            <div class="chart-header">
+                <h2>⏱️ Duración de Viajes por Ruta</h2>
+                <div class="chart-controls">
+                    <select id="vistaDuracion">
+                        <option value="promedio">Promedio</option>
+                        <option value="minmax">Mínimo y Máximo</option>
+                    </select>
+                </div>
+            </div>
+            <div class="chart-container">
+                <canvas id="chartDuracion"></canvas>
+            </div>
+            <div class="chart-info">
+                <p id="infoDuracion"></p>
+            </div>
+        </div>
+
+        <!-- Tabla de Detalles -->
+        <div class="details-section">
+            <h2>📋 Detalles por Ruta</h2>
+            <div class="table-wrapper">
+                <table id="tablaDetalles">
+                    <thead>
+                        <tr>
+                            <th>Ruta</th>
+                            <th>Total Viajes</th>
+                            <th>Retardos</th>
+                            <th>% Puntualidad</th>
+                            <th>Total Pasajeros</th>
+                            <th>Promedio Pasajeros</th>
+                            <th>Duración Promedio</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaDetallesBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Botón de Exportar Análisis -->
+        <div class="export-analysis">
+            <button id="exportarAnalisis" class="export-analysis-btn">
+                📊 Exportar Análisis Completo a Excel
+            </button>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="js/analisis.js"></script>
+</body>
+</html>
