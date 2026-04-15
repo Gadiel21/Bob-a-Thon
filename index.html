@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Gestión de Rutas</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚌 Sistema de Gestión de Rutas de Transporte</h1>
+            <p class="subtitle">Registro de Entradas y Salidas</p>
+        </header>
+
+        <div class="controls">
+            <div class="date-control">
+                <label for="fecha">Fecha:</label>
+                <input type="date" id="fecha" value="2026-01-04">
+            </div>
+            <div class="export-controls">
+                <button id="exportBtn" class="export-btn">📊 Exportar Fecha Actual</button>
+                <button id="exportRangeBtn" class="export-range-btn">📅 Exportar Rango de Fechas</button>
+                <button id="exportAllBtn" class="export-all-btn">📚 Exportar Todo el Histórico</button>
+            </div>
+        </div>
+
+        <!-- Modal para seleccionar rango de fechas -->
+        <div id="rangeModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>📅 Seleccionar Rango de Fechas</h2>
+                    <span class="close">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div class="range-inputs">
+                        <div class="range-input-group">
+                            <label for="fechaInicio">Fecha Inicio:</label>
+                            <input type="date" id="fechaInicio">
+                        </div>
+                        <div class="range-input-group">
+                            <label for="fechaFin">Fecha Fin:</label>
+                            <input type="date" id="fechaFin">
+                        </div>
+                    </div>
+                    <div class="modal-info">
+                        <p id="rangeInfo">Selecciona las fechas para exportar</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="cancelRangeBtn" class="cancel-btn">Cancelar</button>
+                    <button id="confirmRangeBtn" class="confirm-btn">Exportar Rango</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="routes-section">
+            <h2>Rutas Disponibles</h2>
+            <div class="routes-grid">
+                <div class="route-item">40 | 8 DE JULIO</div>
+                <div class="route-item">33 | ANGEL LEAÑO</div>
+                <div class="route-item">37 | AVIACION</div>
+                <div class="route-item">36 | CHAPALA</div>
+                <div class="route-item">LAS AGUILAS</div>
+                <div class="route-item">68 | EL SALTO</div>
+                <div class="route-item">22 | LAZARO CARDENAS</div>
+                <div class="route-item">19 | LOMA DORADA</div>
+                <div class="route-item">21 | OBLATOS</div>
+                <div class="route-item">28 | PATRIA</div>
+                <div class="route-item">38 | PROLONG. M. OTERO</div>
+                <div class="route-item">35 | PROVIDENCIA</div>
+                <div class="route-item">17 | REAL DE COLIMA 1</div>
+                <div class="route-item">31 | SAN ISIDRO</div>
+                <div class="route-item">24 | TRANSITO</div>
+                <div class="route.item">703 | COLIMA ADMIN</div>
+                <div class="route.item">700 | SANTA MARGARITA</div>
+                <div class="route.item">703 | VALLARTA ADMIN</div>
+            </div>
+            </div>
+        </div>
+
+        <div class="table-section">
+            <div class="table-header">
+                <h2>Registro de Movimientos</h2>
+                <button id="addRowBtn" class="add-btn">➕ Agregar Registro</button>
+            </div>
+            
+            <div class="table-wrapper">
+                <table id="dataTable">
+                    <thead>
+                        <tr>
+                            <th colspan="5" class="section-header entrada">ENTRADA</th>
+                            <th colspan="4" class="section-header salida">SALIDA</th>
+                            <th rowspan="2" class="action-header">Acciones</th>
+                        </tr>
+                        <tr>
+                            <th>Hora Inicio</th>
+                            <th>Hora Llegada</th>
+                            <th>Población</th>
+                            <th>Ruta</th>
+                            <th>Unidad</th>
+                            <th>Hora Salida</th>
+                            <th>Población</th>
+                            <th>Ruta</th>
+                            <th>Unidad</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <!-- Las filas se agregarán dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-number" id="totalRegistros">0</div>
+                <div class="stat-label">Total Registros</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="registrosHoy">0</div>
+                <div class="stat-label">Registros Hoy</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
